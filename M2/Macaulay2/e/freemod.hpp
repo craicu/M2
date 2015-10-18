@@ -9,7 +9,10 @@
 class Matrix;
 class GBMatrix;
 
-class FreeModule : public immutable_object
+// an include file under mingw32 defines a macro with the name FreeModule:
+#undef FreeModule
+
+class FreeModule : public EngineObject
 {
   friend class Ring;
   FreeModule(const Ring *R, int n, bool has_schreyer_order);
@@ -21,6 +24,8 @@ protected:
   const Ring *R;
 
 protected:
+  virtual unsigned int computeHashValue() const;
+  
   void initialize(const Ring *RR);
 
   virtual FreeModule *new_free() const;
@@ -62,6 +67,8 @@ public:
   FreeModule * schur       (const int *m)         const;
   FreeModule * exterior    (int p)                const;
   FreeModule * symm        (int p)                const;
+
+  M2_arrayintOrNull select_by_degrees(M2_arrayintOrNull lo, M2_arrayintOrNull hi) const;
 
   void direct_sum_to(const FreeModule *G);
   int lowest_primary_degree() const;

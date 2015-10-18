@@ -15,7 +15,7 @@ newPackage(
     	DebuggingMode => false
     	)
 
-export {multidoc, doc, docTemplate, docExample, packageTemplate, simpleDocFrob}
+export {"multidoc", "doc", "docTemplate", "docExample", "packageTemplate", "simpleDocFrob"}
 
 needsPackage "Text"
 
@@ -65,6 +65,10 @@ multiString = (key, textlines, keylinenum) -> (				    -- written by Andrew Hoef
      if #textlines === 0 then
        error("line ",toString keylinenum," of string: expected at least one indented line after "|toString key);
      key => concatenate between(newline, getText \ textlines)
+     )
+
+listOfStrings = (key, textlines, keylinenum) -> (
+     key => getText \ textlines
      )
 
 reassemble = (indent,textlines) -> concatenate between(newline,
@@ -161,7 +165,8 @@ KeyFunctions = new HashTable from {
      "Caveat" => (textlines, keylinenum) -> Caveat => {markup(textlines, keylinenum)},
      "Consequences" => (textlines, keylinenum) -> Consequences => applySplit(ConsequencesFuntions, textlines),
      "Inputs" => (textlines, keylinenum) -> Inputs => items(textlines, keylinenum),
-     "Outputs" => (textlines, keylinenum) -> Outputs => items(textlines, keylinenum)
+     "Outputs" => (textlines, keylinenum) -> Outputs => items(textlines, keylinenum),
+     "ExampleFiles" => (textlines, keylinenum) -> listOfStrings(ExampleFiles,textlines, keylinenum)
      }
 
 NodeFunctions = new HashTable from {
